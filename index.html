@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARK ACCESS</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  background: #050807;
+  color: #00ff88;
+  font-family: monospace;
+  text-align: center;
+  padding: 25px 15px;
+}
+.container {
+  max-width: 550px;
+  margin: 40px auto;
+  border: 1px solid #00ff88;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 0 20px #00ff8844;
+}
+h1 { text-shadow: 0 0 12px #00ff88; }
+.warning { color: #ff4444; }
+button {
+  background: #00ff88;
+  color: #00150b;
+  border: none;
+  padding: 14px 25px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.progress {
+  height: 12px;
+  background: #17231c;
+  margin: 25px 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+#bar {
+  width: 0%;
+  height: 100%;
+  background: #00ff88;
+  transition: width .2s;
+}
+#logs {
+  text-align: left;
+  direction: ltr;
+  min-height: 110px;
+  overflow-wrap: anywhere;
+}
+#result {
+  display: none;
+  color: white;
+  font-size: 24px;
+}
+.small { color: #999; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>⚠ DARK ACCESS ⚠</h1>
+  <p class="warning">SIMULATION MODE — محاكاة فقط</p>
+  <p>اضغط لبدء العرض التمثيلي</p>
+
+  <button id="start" onclick="startSimulation()">
+    START SIMULATION
+  </button>
+
+  <div class="progress">
+    <div id="bar"></div>
+  </div>
+
+  <div id="logs"></div>
+
+  <h2 id="result">
+    😂 اتعمل فيك مقلب يا أسطورة!
+  </h2>
+
+  <p class="small">
+    لا يوجد اختراق أو اتصال بأي جهاز أو جمع بيانات.
+  </p>
+</div>
+
+<script>
+function startSimulation() {
+  const bar = document.getElementById("bar");
+  const logs = document.getElementById("logs");
+  const result = document.getElementById("result");
+  const button = document.getElementById("start");
+
+  button.disabled = true;
+  button.textContent = "RUNNING...";
+  
+  const messages = [
+    "[SIM] Initializing demo...",
+    "[SIM] Loading visual effects...",
+    "[SIM] Checking fictional system...",
+    "[SIM] Running animation...",
+    "[SIM] Simulation complete!"
+  ];
+
+  let progress = 0;
+  let step = 0;
+
+  const timer = setInterval(() => {
+    progress += 2;
+    bar.style.width = progress + "%";
+
+    if (progress % 20 === 0 && step < messages.length) {
+      logs.innerHTML += messages[step] + "<br>";
+      step++;
+    }
+
+    if (progress >= 100) {
+      clearInterval(timer);
+      result.style.display = "block";
+      button.textContent = "COMPLETED";
+    }
+  }, 100);
+}
+</script>
+</body>
+</html>
