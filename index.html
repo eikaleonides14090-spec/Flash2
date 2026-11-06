@@ -1,128 +1,114 @@
 
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DARK ACCESS</title>
+<title>DARK ACCESS 300</title>
 <style>
-* { box-sizing: border-box; }
-body {
-  background: #050807;
-  color: #00ff88;
-  font-family: monospace;
-  text-align: center;
-  padding: 25px 15px;
+*{box-sizing:border-box}
+body{
+  margin:0;background:#020602;color:#00ff66;
+  font-family:monospace;padding:18px;
 }
-.container {
-  max-width: 550px;
-  margin: 40px auto;
-  border: 1px solid #00ff88;
-  border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 0 20px #00ff8844;
+header{
+  border-bottom:1px solid #00ff66;
+  padding-bottom:12px;margin-bottom:12px;
 }
-h1 { text-shadow: 0 0 12px #00ff88; }
-.warning { color: #ff4444; }
-button {
-  background: #00ff88;
-  color: #00150b;
-  border: none;
-  padding: 14px 25px;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 7px;
-  cursor: pointer;
+h2{font-size:21px;text-shadow:0 0 12px #00ff66}
+.tag{color:#ffcc00;font-size:12px}
+#status{color:#00ccff;margin:12px 0}
+#terminal{
+  height:60vh;overflow:hidden;
+  border:1px solid #075b25;padding:12px;
+  background:#000;font-size:13px;
+  line-height:1.7;overflow-wrap:anywhere;
 }
-.progress {
-  height: 12px;
-  background: #17231c;
-  margin: 25px 0;
-  border-radius: 10px;
-  overflow: hidden;
+.line{animation:appear .15s ease}
+@keyframes appear{
+ from{opacity:0;transform:translateX(-8px)}
+ to{opacity:1;transform:translateX(0)}
 }
-#bar {
-  width: 0%;
-  height: 100%;
-  background: #00ff88;
-  transition: width .2s;
+#progress{
+ height:7px;background:#123;margin-top:15px;
 }
-#logs {
-  text-align: left;
-  direction: ltr;
-  min-height: 110px;
-  overflow-wrap: anywhere;
+#bar{height:100%;width:0;background:#00ff66}
+#count{margin-top:10px;color:#fff}
+#ending{
+ display:none;text-align:center;margin-top:25px;
+ color:#fff;font-family:Arial,sans-serif;
 }
-#result {
-  display: none;
-  color: white;
-  font-size: 24px;
-}
-.small { color: #999; font-size: 12px; }
+#ending h1{color:#00ff66}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>⚠ DARK ACCESS ⚠</h1>
-  <p class="warning">SIMULATION MODE — محاكاة فقط</p>
-  <p>اضغط لبدء العرض التمثيلي</p>
+<header>
+<h2>⚡ DARK ACCESS 300</h2>
+<div class="tag">SIMULATION MODE — PRANK ONLY</div>
+</header>
 
-  <button id="start" onclick="startSimulation()">
-    START SIMULATION
-  </button>
+<div id="status">INITIALIZING VISUAL SIMULATION...</div>
+<div id="terminal"></div>
+<div id="progress"><div id="bar"></div></div>
+<div id="count">0 / 300</div>
 
-  <div class="progress">
-    <div id="bar"></div>
-  </div>
-
-  <div id="logs"></div>
-
-  <h2 id="result">
-    😂 اتعمل فيك مقلب يا أسطورة!
-  </h2>
-
-  <p class="small">
-    لا يوجد اختراق أو اتصال بأي جهاز أو جمع بيانات.
-  </p>
+<div id="ending">
+<h1>😂 اتعمل فيك مقلب يا أسطورة!</h1>
+<p>ولا جهاز اتخترق ولا أي بيانات اتجمعت.</p>
+<h2>SIMULATION COMPLETE</h2>
 </div>
 
 <script>
-function startSimulation() {
-  const bar = document.getElementById("bar");
-  const logs = document.getElementById("logs");
-  const result = document.getElementById("result");
-  const button = document.getElementById("start");
+const terminal=document.getElementById("terminal");
+const bar=document.getElementById("bar");
+const count=document.getElementById("count");
+const status=document.getElementById("status");
 
-  button.disabled = true;
-  button.textContent = "RUNNING...";
-  
-  const messages = [
-    "[SIM] Initializing demo...",
-    "[SIM] Loading visual effects...",
-    "[SIM] Checking fictional system...",
-    "[SIM] Running animation...",
-    "[SIM] Simulation complete!"
-  ];
+const messages=[
+"Starting visual simulation...",
+"Loading fictional security interface...",
+"Scanning imaginary network...",
+"Checking virtual connection...",
+"Analyzing fictional system...",
+"Generating simulation data...",
+"Virtual access sequence started...",
+"Encrypting imaginary packets...",
+"Testing fictional firewall...",
+"Running visual security protocol...",
+"SIMULATION MODE ACTIVE"
+];
 
-  let progress = 0;
-  let step = 0;
+let current=0;
 
-  const timer = setInterval(() => {
-    progress += 2;
-    bar.style.width = progress + "%";
+function addLine(){
+ if(current>=300){
+   status.textContent="SIMULATION FINISHED";
+   document.getElementById("ending").style.display="block";
+   return;
+ }
 
-    if (progress % 20 === 0 && step < messages.length) {
-      logs.innerHTML += messages[step] + "<br>";
-      step++;
-    }
+ current++;
+ let line=document.createElement("div");
+ line.className="line";
+ let msg=messages[Math.floor(Math.random()*messages.length)];
+ line.textContent="["+String(current).padStart(3,"0")+"] "+msg;
+ terminal.appendChild(line);
 
-    if (progress >= 100) {
-      clearInterval(timer);
-      result.style.display = "block";
-      button.textContent = "COMPLETED";
-    }
-  }, 100);
+ while(terminal.children.length>35){
+   terminal.removeChild(terminal.firstChild);
+ }
+
+ bar.style.width=(current/300*100)+"%";
+ count.textContent=current+" / 300";
+
+ let speed=Math.max(20,150-current*0.4);
+ setTimeout(addLine,speed);
 }
+
+setTimeout(()=>{
+ status.textContent="VISUAL SEQUENCE RUNNING...";
+ addLine();
+},700);
 </script>
 </body>
 </html>
