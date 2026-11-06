@@ -1,37 +1,81 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CYBER NIGHT</title>
+
 <style>
 *{box-sizing:border-box}
+
 body{
- margin:0;background:#010301;color:#00ff66;
- font-family:monospace;overflow:hidden;
+ margin:0;
+ background:#010301;
+ color:#00ff66;
+ font-family:monospace;
+ overflow:hidden;
 }
+
 header{
- padding:18px;border-bottom:1px solid #00ff66;
- background:#020a04;box-shadow:0 0 20px #00ff66;
+ padding:18px;
+ background:#020a04;
+ border-bottom:1px solid #00ff66;
+ box-shadow:0 0 20px #00ff66;
 }
+
 h1{
- margin:0;letter-spacing:4px;
+ margin:0;
+ letter-spacing:4px;
  text-shadow:0 0 15px #00ff66;
  animation:flicker 2s infinite;
 }
-.tag{font-size:11px;color:#ff3333;margin-top:8px}
+
+.tag{
+ color:#ff3333;
+ font-size:11px;
+ margin-top:8px;
+}
+
 #terminal{
- height:70vh;overflow:hidden;padding:12px;
- font-size:12px;line-height:1.7;
+ height:75vh;
+ overflow:hidden;
+ padding:12px;
+ font-size:12px;
+ line-height:1.8;
  overflow-wrap:anywhere;
 }
-.line{animation:appear .1s}
-.red{color:#ff2929;text-shadow:0 0 8px red}
-.blue{color:#00d9ff}.glitch{
- animation: screenGlitch .12s infinite;
+
+.line{
+ animation:appear .1s ease;
+}
+
+.red{
+ color:#ff2929;
+ text-shadow:0 0 8px red;
+}
+
+.blue{
+ color:#00d9ff;
+}
+
+@keyframes appear{
+ from{opacity:0;transform:translateX(-7px)}
+ to{opacity:1;transform:translateX(0)}
+}
+
+@keyframes flicker{
+ 0%,90%,100%{opacity:1}
+ 92%{opacity:.3}
+ 95%{opacity:.8}
+}
+
+/* CINEMATIC GLITCH */
+.glitch{
+ animation:screenGlitch .12s infinite;
  filter:hue-rotate(90deg);
 }
+
 @keyframes screenGlitch{
  0%{transform:translate(0)}
  20%{transform:translate(-5px,2px)}
@@ -39,43 +83,69 @@ h1{
  60%{transform:translate(-3px,3px)}
  80%{transform:translate(3px,-3px)}
  100%{transform:translate(0)}
- }
-@keyframes appear{
- from{opacity:0;transform:translateX(-7px)}
- to{opacity:1;transform:translateX(0)}
 }
-@keyframes flicker{
- 0%,90%,100%{opacity:1}
- 92%{opacity:.3}
- 95%{opacity:.8}
+
+.flash{
+ position:fixed;
+ inset:0;
+ background:red;
+ opacity:0;
+ pointer-events:none;
+ z-index:8;
 }
+
+.flash.active{
+ animation:flashEffect .3s 5;
+}
+
+@keyframes flashEffect{
+ 0%,100%{opacity:0}
+ 50%{opacity:.35}
+}
+
 #ending{
- display:none;position:fixed;inset:0;z-index:10;
- background:#010301;align-items:center;
- justify-content:center;flex-direction:column;
- text-align:center;padding:20px;
+ display:none;
+ position:fixed;
+ inset:0;
+ z-index:10;
+ background:#010301;
+ align-items:center;
+ justify-content:center;
+ flex-direction:column;
+ text-align:center;
+ padding:20px;
  animation:appear .5s;
 }
+
 #ending h2{
- color:#00ff66;font-size:27px;
+ color:#00ff66;
+ font-size:27px;
  text-shadow:0 0 18px #00ff66;
- animation:flicker 1.5s infinite;
 }
+
 #ending h3{
- color:#00ff66;font-size:19px;
+ color:#00ff66;
+ font-size:19px;
  text-shadow:0 0 12px #00ff66;
 }
-#ending p{color:#00d9ff;font-size:12px}
+
+#ending p{
+ color:#00d9ff;
+ font-size:12px;
+}
+
 </style>
 </head>
+
 <body>
 
 <header>
 <h1>CYBER NIGHT</h1>
-<div class="tag">SIMULATION MODE — VISUAL EFFECTS</div>
+<div class="tag">SIMULATION MODE — VISUAL EFFECTS ONLY</div>
 </header>
 
 <div id="terminal"></div>
+<div class="flash" id="flash"></div>
 
 <div id="ending">
 <h2>تم اختراقك بنجاح 😈😅</h2>
@@ -84,8 +154,10 @@ h1{
 </div>
 
 <script>
+
 const terminal=document.getElementById("terminal");
 const ending=document.getElementById("ending");
+const flash=document.getElementById("flash");
 
 const messages=[
 "Initializing cyber interface...",
@@ -113,18 +185,25 @@ const messages=[
 let total=0;
 const MAX=300;
 
+function finish(){
+ document.body.classList.add("glitch");
+ flash.classList.add("active");
+
+ setTimeout(()=>{
+  document.body.classList.remove("glitch");
+  ending.style.display="flex";
+ },1800);
+}
+
 function addLine(){
+
  if(total>=MAX){
-  document.body.classList.add("glitch");
-setTimeout(()=>{
- ending.style.display="flex";
- document.body.classList.remove("glitch");
-},1800);
-return;;
+  finish();
   return;
  }
 
  total++;
+
  const line=document.createElement("div");
  line.className="line";
 
@@ -132,8 +211,11 @@ return;;
   Math.floor(Math.random()*messages.length)
  ];
 
- if(total%11===0)line.classList.add("red");
- else if(total%5===0)line.classList.add("blue");
+ if(total%11===0){
+  line.classList.add("red");
+ }else if(total%5===0){
+  line.classList.add("blue");
+ }
 
  terminal.appendChild(line);
 
@@ -141,10 +223,11 @@ return;;
   terminal.removeChild(terminal.firstChild);
  }
 
- setTimeout(addLine,1);
+ setTimeout(addLine,10);
 }
 
-setTimeout(addLine,50);
+setTimeout(addLine,300);
+
 </script>
 </body>
 </html>
