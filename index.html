@@ -28,7 +28,18 @@ h1{
 }
 .line{animation:appear .1s}
 .red{color:#ff2929;text-shadow:0 0 8px red}
-.blue{color:#00d9ff}
+.blue{color:#00d9ff}.glitch{
+ animation: screenGlitch .12s infinite;
+ filter:hue-rotate(90deg);
+}
+@keyframes screenGlitch{
+ 0%{transform:translate(0)}
+ 20%{transform:translate(-5px,2px)}
+ 40%{transform:translate(5px,-2px)}
+ 60%{transform:translate(-3px,3px)}
+ 80%{transform:translate(3px,-3px)}
+ 100%{transform:translate(0)}
+ }
 @keyframes appear{
  from{opacity:0;transform:translateX(-7px)}
  to{opacity:1;transform:translateX(0)}
@@ -104,7 +115,12 @@ const MAX=300;
 
 function addLine(){
  if(total>=MAX){
-  ending.style.display="flex";
+  document.body.classList.add("glitch");
+setTimeout(()=>{
+ ending.style.display="flex";
+ document.body.classList.remove("glitch");
+},1800);
+return;;
   return;
  }
 
