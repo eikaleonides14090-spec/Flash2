@@ -1,114 +1,139 @@
 
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DARK ACCESS 300</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CYBER NIGHT</title>
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0;background:#020602;color:#00ff66;
-  font-family:monospace;padding:18px;
+ margin:0;background:#020403;color:#00ff70;
+ font-family:monospace;overflow:hidden;
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;
+ background:repeating-linear-gradient(
+ transparent 0px,transparent 3px,
+ rgba(0,255,80,.035) 4px);
+ z-index:5;
 }
 header{
-  border-bottom:1px solid #00ff66;
-  padding-bottom:12px;margin-bottom:12px;
+ padding:17px;border-bottom:1px solid #087c39;
+ background:#020a05;box-shadow:0 0 20px #003b18;
 }
-h2{font-size:21px;text-shadow:0 0 12px #00ff66}
-.tag{color:#ffcc00;font-size:12px}
-#status{color:#00ccff;margin:12px 0}
+h1{
+ margin:0;font-size:23px;letter-spacing:4px;
+ text-shadow:0 0 12px #00ff70;
+ animation:flicker 3s infinite;
+}
+.tag{color:#ff3333;font-size:11px;margin-top:8px}
 #terminal{
-  height:60vh;overflow:hidden;
-  border:1px solid #075b25;padding:12px;
-  background:#000;font-size:13px;
-  line-height:1.7;overflow-wrap:anywhere;
+ height:67vh;overflow:hidden;padding:14px;
+ font-size:12px;line-height:1.8;
+ overflow-wrap:anywhere;
+ text-shadow:0 0 6px #00ff70;
 }
-.line{animation:appear .15s ease}
-@keyframes appear{
- from{opacity:0;transform:translateX(-8px)}
+.line{animation:show .18s ease}
+.alert{color:#ff3333;text-shadow:0 0 8px red}
+.blue{color:#00d9ff}
+@keyframes show{
+ from{opacity:0;transform:translateX(-10px)}
  to{opacity:1;transform:translateX(0)}
 }
-#progress{
- height:7px;background:#123;margin-top:15px;
+@keyframes flicker{
+ 0%,95%,100%{opacity:1}
+ 96%{opacity:.4}
+ 98%{opacity:.8}
 }
-#bar{height:100%;width:0;background:#00ff66}
-#count{margin-top:10px;color:#fff}
 #ending{
- display:none;text-align:center;margin-top:25px;
- color:#fff;font-family:Arial,sans-serif;
+ display:none;position:fixed;inset:0;
+ background:rgba(0,0,0,.96);
+ align-items:center;justify-content:center;
+ flex-direction:column;text-align:center;
+ padding:25px;z-index:10;
+ font-family:Arial,sans-serif;
 }
-#ending h1{color:#00ff66}
+#ending h2{
+ color:#00ff70;font-size:27px;
+ text-shadow:0 0 20px #00ff70;
+}
+#ending p{color:white;line-height:1.8}
+#ending small{color:#00d9ff}
 </style>
 </head>
 <body>
 <header>
-<h2>⚡ DARK ACCESS 300</h2>
-<div class="tag">SIMULATION MODE — PRANK ONLY</div>
+<h1>CYBER NIGHT</h1>
+<div class="tag">SIMULATION MODE — VISUAL PRANK ONLY</div>
 </header>
 
-<div id="status">INITIALIZING VISUAL SIMULATION...</div>
 <div id="terminal"></div>
-<div id="progress"><div id="bar"></div></div>
-<div id="count">0 / 300</div>
 
 <div id="ending">
-<h1>😂 اتعمل فيك مقلب يا أسطورة!</h1>
-<p>ولا جهاز اتخترق ولا أي بيانات اتجمعت.</p>
-<h2>SIMULATION COMPLETE</h2>
+<h2>😂 اتعمل فيك مقلب يا أسطورة!</h2>
+<p>كل اللي شوفته كان محاكاة سينمائية فقط.<br>
+مفيش جهاز اتخترق ولا بيانات اتجمعت.</p>
+<small>CYBER NIGHT — SIMULATION COMPLETE</small>
 </div>
 
 <script>
 const terminal=document.getElementById("terminal");
-const bar=document.getElementById("bar");
-const count=document.getElementById("count");
-const status=document.getElementById("status");
+const ending=document.getElementById("ending");
 
 const messages=[
-"Starting visual simulation...",
-"Loading fictional security interface...",
-"Scanning imaginary network...",
-"Checking virtual connection...",
-"Analyzing fictional system...",
-"Generating simulation data...",
-"Virtual access sequence started...",
-"Encrypting imaginary packets...",
-"Testing fictional firewall...",
-"Running visual security protocol...",
-"SIMULATION MODE ACTIVE"
+"Initializing visual simulation...",
+"Loading fictional cyber interface...",
+"Connecting to imaginary network...",
+"Analyzing virtual security layers...",
+"Generating encrypted visual packets...",
+"Running fictional access sequence...",
+"Checking imaginary firewall...",
+"Virtual system response detected...",
+"Loading cinematic terminal...",
+"SIMULATION MODE ACTIVE",
+"Warning: fictional activity detected!",
+"Visual protocol initialized...",
+"Scanning imaginary network nodes...",
+"Decrypting simulated data...",
+"Virtual security test running...",
+"Generating random system signals...",
+"Fictional access sequence continuing...",
+"Cyber interface synchronization...",
+"Testing imaginary connection...",
+"Visual simulation progressing..."
 ];
 
-let current=0;
+let total=0;
+const MAX=10000;
 
 function addLine(){
- if(current>=300){
-   status.textContent="SIMULATION FINISHED";
-   document.getElementById("ending").style.display="block";
+ if(total>=MAX){
+   ending.style.display="flex";
    return;
  }
 
- current++;
- let line=document.createElement("div");
+ total++;
+ const line=document.createElement("div");
  line.className="line";
- let msg=messages[Math.floor(Math.random()*messages.length)];
- line.textContent="["+String(current).padStart(3,"0")+"] "+msg;
+
+ const msg=messages[Math.floor(Math.random()*messages.length)];
+ line.textContent="> "+msg;
+
+ if(total%23===0)line.classList.add("alert");
+ else if(total%7===0)line.classList.add("blue");
+
  terminal.appendChild(line);
 
  while(terminal.children.length>35){
    terminal.removeChild(terminal.firstChild);
  }
 
- bar.style.width=(current/300*100)+"%";
- count.textContent=current+" / 300";
-
- let speed=Math.max(20,150-current*0.4);
- setTimeout(addLine,speed);
+ const delay=Math.max(35,125-total/120);
+ setTimeout(addLine,delay);
 }
 
-setTimeout(()=>{
- status.textContent="VISUAL SEQUENCE RUNNING...";
- addLine();
-},700);
+setTimeout(addLine,700);
 </script>
 </body>
 </html>
